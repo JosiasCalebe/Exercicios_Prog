@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <title>SStop - API</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-10">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Cadastrar</span>
+                    </div>
+                    <input type="text" id="nomeArtista" class="form-control" placeholder="Nome do Artista"
+                        aria-label="nome" aria-describedby="basic-addon1" />
+                        <input type="text" id="idEstilo" class="form-control" placeholder="Id do Estilo"
+                        aria-label="estiloId" aria-describedby="basic-addon1" />
+                </div>
+            </div>
+            <div class="col-2">
+                <input class="btn btn-primary" type="submit" value="Cadastrar" id="btnCadastrar" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-hover" id="tabela-lista">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Estilo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-lista-corpo"></tbody>
+                </table>
+                <table class="table table-hover" id="tabela-lista-2">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Estilo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-lista-corpo"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputArtista = document.querySelector('#nomeArtista');
+        const inputEstilo = document.querySelector('#idEstilo');
+        const btnCadastrar = document.querySelector('#btnCadastrar');
+        const tabela = document.querySelector('#tabela-lista');
+        const tabelaa = document.querySelector('#tabela-lista-2');
+        window.onload = () => {
+            const URL = 'http://localhost:5000/api/artistas';
+
+            fetch(URL)
+                .then(resposta => resposta.json())
+                .then(data => preencherTabelas(data))
+                .catch(erro => console.error(erro));
+
+            function sucesso() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    preencherTabelas(data);
+                } else {
+                    console.log('erro');
+                }
+            }
+            function preencherTabelas(artistas) {
+                artistas.forEach((element) => {
+                    const tr = document.createElement('tr');
+                    const td_id = document.createElement('td');
+                    const td_nome = document.createElement('td');
+                    const td_estilo = document.createElement('td');
+
+
+                    td_id.textContent = element.idArtista;
+                    td_nome.textContent = element.nome;
+                    td_estilo.textContent = element.estilo.nome;
+                    tabela.appendChild(tr);
+                    tr.appendChild(td_id);
+                    tr.appendChild(td_nome);
+                    tr.appendChild(td_estilo);
+                });
+            }
+
+            const URL2 = 'http://localhost:5000/api/estilos';
+
+            fetch(URL2)
+                .then(resposta => resposta.json())
+                .then(data => preencherTabelass(data))
+                .catch(erro => console.error(erro));
+
+            function sucessoo() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    preencherTabelass(data);
+                } else {
+                    console.log('erro');
+                }
+            }
+            function preencherTabelass(estilos) {
+                estilos.forEach((element) => {
+                    const tr = document.createElement('tr');
+                    const td_id = document.createElement('td');
+                    const td_nome = document.createElement('td');
+
+                    td_id.textContent = element.idEstilo;
+                    td_nome.textContent = element.nome;
+                    tabelaa.appendChild(tr);
+                    tr.appendChild(td_id);
+                    tr.appendChild(td_nome);
+                });
+            }
+
+        }
+
+        btnCadastrar.addEventListener('click', () => {
+            event.preventDefault();
+            let objetoJSON = {
+                nome: inputArtista.value,
+                estiloId:inputEstilo.value
+            };
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:5000/api/artistas', true);
+            xhr.setRequestHeader('Content-Type', 'application/json', 'charset=utf-8');
+            xhr.send(JSON.stringify(objetoJSON));
+        })
+    </script>
+
+</body>
+
+</html>

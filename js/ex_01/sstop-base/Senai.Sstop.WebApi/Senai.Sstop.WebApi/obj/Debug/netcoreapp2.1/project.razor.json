@@ -1,0 +1,19 @@
+{
+  "FilePath": "c:\\Users\\46588797869\\Desktop\\Exercicios_Prog\\js\\ex_01\\sstop-base\\Senai.Sstop.WebApi\\Senai.Sstop.WebApi\\Senai.Sstop.WebApi.csproj",
+  "Configuration": {
+    "ConfigurationName": "MVC-2.1",
+    "LanguageVersion": "2.1",
+    "Extensions": [
+      {
+        "ExtensionName": "MVC-2.1"
+      }
+    ]
+  },
+  "ProjectWorkspaceState": {
+    "TagHelpers": [],
+    "CSharpLanguageVersion": 800
+  },
+  "RootNamespace": "Senai.Sstop.WebApi",
+  "Documents": [],
+  "SerializationFormat": "0.2"
+}

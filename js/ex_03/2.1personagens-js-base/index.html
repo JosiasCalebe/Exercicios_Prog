@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Exercícios</title>
+
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <script>
+        let personagens = [{
+            nome: "Capitão Cometa",
+            dataAparicao: 1951,
+            editora: "DC"
+        }, {
+            nome: "Lanterna Verde",
+            dataAparicao: 1940,
+            editora: "DC"
+        }, {
+            nome: "Ciborgue",
+            dataAparicao: 1980,
+            editora: "DC"
+        }, {
+            nome: "Homem Aranha",
+            dataAparicao: 1962,
+            editora: "Marvel"
+        }, {
+            nome: "Homem de Ferro",
+            dataAparicao: 1963,
+            editora: "Marvel"
+        }, {
+            nome: "Capitão América",
+            dataAparicao: 1940,
+            editora: "Marvel"
+        }];
+
+        let editora = personagens.filter(Element =>{
+        return Element.editora === "Marvel";
+        });
+        console.log(editora);
+        let data = personagens.filter(Element =>{
+        return Element.dataAparicao > 1950;
+        });
+        console.log(data);
+        let nomes = personagens.map(Element =>{
+        return Element.nome;
+        });
+        console.log(nomes);
+        personagens.push({
+            nome: "Capitã Marvel",
+            dataAparicao: 1977,
+            editora: "Marvel"
+        });
+        console.log(editora.length);
+        let date = new Date().getFullYear();
+        let idades = personagens.map(Element =>{
+        return date - Element.dataAparicao;
+        });
+        let soma = idades.reduce((prevValue, Element)=>{
+           return prevValue + Element;
+         });
+        console.log(soma);
+        
+        let perso = [];
+        personagens.forEach(Element =>{
+            perso.push({
+            nome: Element.nome,
+            idade: date - Element.dataAparicao
+        });
+        });
+        console.log(perso);
+
+    </script>
+
+</body>
+
+</html>

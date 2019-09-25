@@ -1,0 +1,19 @@
+{
+  "FilePath": "c:\\Users\\46588797869\\Desktop\\Exercicios_Prog\\c#\\Senai.BookStore.WebApi\\Senai.BookStore.WebApi\\Senai.BookStore.WebApi.csproj",
+  "Configuration": {
+    "ConfigurationName": "MVC-2.1",
+    "LanguageVersion": "2.1",
+    "Extensions": [
+      {
+        "ExtensionName": "MVC-2.1"
+      }
+    ]
+  },
+  "ProjectWorkspaceState": {
+    "TagHelpers": [],
+    "CSharpLanguageVersion": 800
+  },
+  "RootNamespace": "Senai.BookStore.WebApi",
+  "Documents": [],
+  "SerializationFormat": "0.2"
+}
