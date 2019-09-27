@@ -23,15 +23,15 @@
                     </div>
                     <input type="text" id="nomePokemon" class="form-control" placeholder="Nome do Pokemon"
                         aria-label="nome" aria-describedby="basic-addon1" />
-                        <form action="" class="form-inline">
-                            <select class="custom-select my-1 mr-sm-2" id="meuSelect">
-                                <option value="0" selected>Escolha o que pesquisar...</option>
-                                <option value="Pokemon">Pokemon</option>
-                                <option value="Habilidade">Habilidade</option>
-                            </select>
-                        </form>
+                    <form action="" class="form-inline">
+                        <select class="custom-select my-1 mr-sm-2" id="meuSelect">
+                            <option value="0" selected>Escolha o que pesquisar...</option>
+                            <option value="Pokemon">Pokemon</option>
+                            <option value="Habilidade">Habilidade</option>
+                        </select>
+                    </form>
                 </div>
-                
+
             </div>
             <div class="col-2">
                 <input class="btn btn-primary" type="submit" value="Buscar" id="btnBuscar" />
@@ -45,6 +45,7 @@
                         <tr>
                             <th scope="col">Pokedex</th>
                             <th scope="col">Nome</th>
+                            <th scope="col">Tipo</th>
                             <th scope="col">Peso</th>
                             <th scope="col">Altura</th>
                             <th scope="col">Imagem</th>
@@ -54,7 +55,7 @@
                 </table>
                 <t2 style="font-size:32px; font-weight: bold"> Habilidades</t2>
                 <table class="table table-hover" id="habilidades">
-                     
+
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Id</th>
@@ -75,62 +76,103 @@
         const tabelaHab = document.querySelector("#habilidades");
         const escolha = document.querySelector("#meuSelect");
         const URL = 'https://pokeapi.co/api/v2/';
-        btnBuscar.addEventListener('click', ()=>{
-            if(inputPokemon.value <= 0){
+        btnBuscar.addEventListener('click', () => {
+            if (inputPokemon.value <= 0) {
                 alert('Insira um pokemon');
-            }else{
-                
-                while(tabelaPoke.rows.length > 1){
+            } else {
+
+                while (tabelaPoke.rows.length > 1) {
                     tabelaPoke.deleteRow(1);
                 }
-                while(tabelaHab.rows.length > 1){
+                while (tabelaHab.rows.length > 1) {
                     tabelaHab.deleteRow(1);
-                    }
-                
-                if(escolha.value === "Pokemon"){
-                fetch(URL + 'pokemon/'+ (inputPokemon.value).toLowerCase())
-                .then(resposta => resposta.json())
-                .then(data => preencherTabelas(data))
-                .catch(erro => console.error(erro));
-                
-                function preencherTabelas(pokemon){
-                    
+                }
+
+                function preencherTabelas(pokemon) {
+
                     const tr = document.createElement('tr');
                     const td_pokedex = document.createElement('td');
                     const td_nome = document.createElement('td');
+                    const td_tipo = document.createElement('td');
                     const td_peso = document.createElement('td');
                     const td_altura = document.createElement('td');
                     const td_linkImg = document.createElement('td');
-                    
+
                     td_pokedex.textContent = pokemon.id;
-                    td_nome.textContent = (pokemon.name).charAt(0).toUpperCase()+(pokemon.name).slice(1);
-                    td_peso.textContent = pokemon.weight;
-                    td_altura.textContent = pokemon.height;
-                    td_linkImg.innerHTML = "<img style=' width:50px; overflow:hidden; margin 0; display:block; width:75%;  margin:-15% 0;' src='"+ pokemon.sprites.front_default +"'>";
+                    td_nome.textContent = (pokemon.name).charAt(0).toUpperCase() + (pokemon.name).slice(1);
+                    pokemon.types.forEach((Element, index)=>{
+                    if(index == 0){
+                        td_tipo.textContent +=(Element.type.name).charAt(0).toUpperCase() + (Element.type.name).slice(1);
+                    }else{
+                        td_tipo.textContent +=', '+(Element.type.name).charAt(0).toUpperCase() + (Element.type.name).slice(1);
+                    }
+                    });
+                    td_peso.textContent = parseInt(pokemon.weight)/10 + 'kg';
+                    td_altura.textContent = parseInt(pokemon.height)/10 + 'm';
+                    td_linkImg.innerHTML = "<img style=' width:50px; overflow:hidden; margin 0; display:block; width:75%;  margin:-5% 0;' src='" + pokemon.sprites.front_default + "'>";
 
                     tabelaPoke.appendChild(tr);
                     tr.appendChild(td_pokedex);
                     tr.appendChild(td_nome);
+                    tr.appendChild(td_tipo);
                     tr.appendChild(td_peso);
                     tr.appendChild(td_altura);
                     tr.appendChild(td_linkImg);
-                    
+                }
 
-                    pokemon.abilities.forEach((Element)=>{
-                        fetch(URL + 'ability/'+ Element.ability.name)
+                if (escolha.value === "Pokemon") {
+                    fetch(URL + 'pokemon/' + (inputPokemon.value).toLowerCase())
                         .then(resposta => resposta.json())
-                        .then(data => preencherTabelaHab(data))
+                        .then(data => preencherTabelas(data))
                         .catch(erro => console.error(erro));
-                    });
 
-                        function preencherTabelaHab(habilidade){
+                    function preencherTabelas(pokemon) {
+
+                        const tr = document.createElement('tr');
+                        const td_pokedex = document.createElement('td');
+                        const td_nome = document.createElement('td');
+                        const td_tipo = document.createElement('td');
+                        const td_peso = document.createElement('td');
+                        const td_altura = document.createElement('td');
+                        const td_linkImg = document.createElement('td');
+
+                        td_pokedex.textContent = pokemon.id;
+                        td_nome.textContent = (pokemon.name).charAt(0).toUpperCase() + (pokemon.name).slice(1);
+                        pokemon.types.forEach((Element, index)=>{
+                            if(index == 0){
+                                td_tipo.textContent +=(Element.type.name).charAt(0).toUpperCase() + (Element.type.name).slice(1);
+                            }else{
+                                td_tipo.textContent +=', '+(Element.type.name).charAt(0).toUpperCase() + (Element.type.name).slice(1);
+                            }
+                        });
+                        td_peso.textContent = parseInt(pokemon.weight)/10 + 'kg';
+                        td_altura.textContent = parseInt(pokemon.height)/10 + 'm';
+                        td_linkImg.innerHTML = "<img style=' width:50px; overflow:hidden; margin 0; display:block; width:75%;  margin:-15% 0;' src='" + pokemon.sprites.front_default + "'>";
+
+                        tabelaPoke.appendChild(tr);
+                        tr.appendChild(td_pokedex);
+                        tr.appendChild(td_nome);
+                        tr.appendChild(td_tipo);
+                        tr.appendChild(td_peso);
+                        tr.appendChild(td_altura);
+                        tr.appendChild(td_linkImg);
+
+
+                        pokemon.abilities.forEach((Element) => {
+                            fetch(URL + 'ability/' + Element.ability.name)
+                                .then(resposta => resposta.json())
+                                .then(data => preencherTabelaHab(data))
+                                .catch(erro => console.error(erro));
+                        });
+
+                        function preencherTabelaHab(habilidade) {
                             const tr = document.createElement('tr');
                             const td_id = document.createElement('td');
                             const td_nome = document.createElement('td');
                             const td_descricao = document.createElement('td');
 
                             td_id.textContent = habilidade.id;
-                            td_nome.textContent = (habilidade.name).charAt(0).toUpperCase()+(habilidade.name).slice(1);
+                            td_nome.textContent = (habilidade.name).charAt(0).toUpperCase() + (habilidade.name).slice(1);
                             td_descricao.textContent = habilidade.effect_entries[0].short_effect;
 
                             tabelaHab.appendChild(tr);
@@ -139,66 +181,45 @@
                             tr.appendChild(td_descricao);
                         }
                     }
-                }else if(escolha.value === "Habilidade"){
-                    fetch(URL + 'ability/'+ (inputPokemon.value).toLowerCase())
+                } else if (escolha.value === "Habilidade") {
+                    fetch(URL + 'ability/' + (inputPokemon.value).toLowerCase())
                         .then(resposta => resposta.json())
                         .then(data => preencherTabelaHabPokes(data))
                         .catch(erro => console.error(erro));
 
-                        
 
-                    function preencherTabelaHabPokes(habilidade){
+
+                    function preencherTabelaHabPokes(habilidade) {
                         const tr = document.createElement('tr');
-                            const td_id = document.createElement('td');
-                            const td_nome = document.createElement('td');
-                            const td_descricao = document.createElement('td');
+                        const td_id = document.createElement('td');
+                        const td_nome = document.createElement('td');
+                        const td_descricao = document.createElement('td');
 
-                            td_id.textContent = habilidade.id;
-                            td_nome.textContent = (habilidade.name).charAt(0).toUpperCase()+(habilidade.name).slice(1);
-                            td_descricao.textContent = habilidade.effect_entries[0].effect;
+                        td_id.textContent = habilidade.id;
+                        td_nome.textContent = (habilidade.name).charAt(0).toUpperCase() + (habilidade.name).slice(1);
+                        td_descricao.textContent = habilidade.effect_entries[0].effect;
 
-                            tabelaHab.appendChild(tr);
-                            tr.appendChild(td_id);
-                            tr.appendChild(td_nome);
-                            tr.appendChild(td_descricao);
-                        habilidade.pokemon.forEach((Element)=>{
-                        fetch(URL + 'pokemon/'+ Element.pokemon.name)
-                        .then(resposta => resposta.json())
-                        .then(data => preencherTabelas(data))
-                        .catch(erro => console.error(erro));
-                    });
+                        tabelaHab.appendChild(tr);
+                        tr.appendChild(td_id);
+                        tr.appendChild(td_nome);
+                        tr.appendChild(td_descricao);
+                        habilidade.pokemon.forEach((Element) => {
+                            fetch(URL + 'pokemon/' + Element.pokemon.name)
+                                .then(resposta => resposta.json())
+                                .then(data => preencherTabelas(data))
+                                .catch(erro => console.error(erro));
+                        });
 
-                    function preencherTabelas(pokemon){
-                    
-                    const tr = document.createElement('tr');
-                    const td_pokedex = document.createElement('td');
-                    const td_nome = document.createElement('td');
-                    const td_peso = document.createElement('td');
-                    const td_altura = document.createElement('td');
-                    const td_linkImg = document.createElement('td');
-                    
-                    td_pokedex.textContent = pokemon.id;
-                    td_nome.textContent = (pokemon.name).charAt(0).toUpperCase()+(pokemon.name).slice(1);
-                    td_peso.textContent = pokemon.weight;
-                    td_altura.textContent = pokemon.height;
-                    td_linkImg.innerHTML = "<img style=' width:50px; overflow:hidden; margin 0; display:block; width:75%;  margin:-5% 0;' src='"+ pokemon.sprites.front_default +"'>";
-
-                    tabelaPoke.appendChild(tr);
-                    tr.appendChild(td_pokedex);
-                    tr.appendChild(td_nome);
-                    tr.appendChild(td_peso);
-                    tr.appendChild(td_altura);
-                    tr.appendChild(td_linkImg);
-                    }
+                        
                     }
 
 
-                }else{
+                } else {
                     alert("Escolha uma opção de pesquisa.");
-                } 
+                }
             }
         });
-        
+
 
     </script>
 
